@@ -1,25 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react'
+import { Container, Table } from 'react-bootstrap'
 
 function App() {
+  const [data, getData] = useState([])
+  const URL = 'https://jsonplaceholder.typicode.com/users'
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = () => {
+    fetch(URL)
+      .then((res) => res.json())
+      .then((response) => {
+        console.log(response)
+        getData(response)
+      })
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Container className='mt-4'>
+      <h1 className='text-center'>USER TABLE</h1>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((item, index) => (
+            <tr key={index}>
+              <td>{item.id}</td>
+              <td>{item.name}</td>
+              <td>{item.username}</td>
+              <td>{item.email}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </Container>
+  )
 }
 
-export default App;
+export default App
